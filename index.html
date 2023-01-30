@@ -27,6 +27,7 @@
     <meta name="theme-color" content="#ffffff" />
 
     <link rel="stylesheet" href="css/index.css" />
+    <script src="script/script.js" defer></script>
     <title>Music Player - музыка для вас</title>
   </head>
 
@@ -74,7 +75,10 @@
       <h2 class="visually-hidden">Список треков</h2>
 
       <div class="catalog__container">
-        <button class="catalog__item track">
+        <button
+          class="catalog__item track"
+          data-track="audio/The weekend - Save Your Tears.mp3"
+        >
           <div class="track__img-wrap">
             <img
               class="track__poster"
@@ -90,7 +94,10 @@
           </div>
         </button>
 
-        <button class="catalog__item track track_active">
+        <button
+          class="catalog__item track track_active"
+          data-track="audio/Imagine Dragons - Follow You.mp3"
+        >
           <div class="track__img-wrap">
             <img
               class="track__poster"
@@ -283,7 +290,7 @@
       </div>
     </section>
 
-    <div class="player player_active">
+    <div class="player">
       <h2 class="visually-hidden">Плеер</h2>
 
       <div class="player__container">
@@ -293,11 +300,21 @@
         </div>
 
         <div class="player__controller">
-          <button class="player__icon player__icon_stop"></button>
-          <button class="player__icon player__icon_prev"></button>
-          <button class="player__icon player__icon_pause"></button>
-          <button class="player__icon player__icon_next"></button>
-          <button class="player__icon player__icon_like"></button>
+          <button
+            class="player__icon player__icon_stop player__controller_stop"
+          ></button>
+          <button
+            class="player__icon player__icon_prev player__controller_prev"
+          ></button>
+          <button
+            class="player__icon player__icon_pause player_controller_pause"
+          ></button>
+          <button
+            class="player__icon player__icon_next player__controller_next"
+          ></button>
+          <button
+            class="player__icon player__icon_like player__controller_like"
+          ></button>
         </div>
 
         <div class="player__progress-wrap">
