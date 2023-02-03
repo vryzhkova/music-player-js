@@ -88,9 +88,30 @@ const dataMusic = [
 const audio = new Audio();
 const player = document.querySelector(".player");
 const trackCard = document.getElementsByClassName("track");
-const pauseBtn = document.querySelector(".player_controller_pause");
-const stopBtn = document.querySelector(".player_controller_stop");
+const pauseBtn = document.querySelector(".player__icon_pause");
+const stopBtn = document.querySelector(".player__icon_stop");
 const catalogContainer = document.querySelector(".catalog__container");
+const prevBtn = document.querySelector(".player__icon_prev");
+const nextBtn = document.querySelector(".player__icon_next");
+const likeBtn = document.querySelector(".player__icon_like");
+const muteBtn = document.querySelector(".player__icon_mute");
+
+const catalogAddBtn = document.createElement("button");
+catalogAddBtn.classList.add("catalog__btn-add");
+catalogAddBtn.innerHTML = `
+<span>Увидеть все</span>
+<svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <path
+        d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
+    />
+</svg>
+`;
 
 const pausePlayer = () => {
   const trackActive = document.querySelector(".track_active");
@@ -115,16 +136,26 @@ const playMusic = (event) => {
     return;
   }
 
+  let i = 0;
   const id = trackActive.dataset.idTrack;
-  const track = dataMusic.find((item) => id === item.id);
+  const track = dataMusic.find((item, index) => {
+    i = index;
+    return id === item.id;
+  });
+
   audio.src = track.mp3;
 
   audio.play();
   pauseBtn.classList.remove("player__icon_play");
   player.classList.add("player_active");
 
+  const prevTrack = i === 0 ? dataMusic.length - 1 : i - 1;
+  const nextTrack = i + 1 === dataMusic.length ? 0 : i + 1;
+  prevBtn.dataset.idTrack = dataMusic[prevTrack].id;
+  nextTrack.dataset.idTrack = dataMusic[nextTrack].id;
+
   for (let i = 0; i < trackCard.length; i++) {
-    trackCard[i].classList.remove("track__active");
+    trackCard[i].classList.remove("track_active");
   }
 
   trackActive.classList.add("track_active");
@@ -138,7 +169,9 @@ const addHandlerTrack = () => {
 
 pauseBtn.addEventListener("click", pausePlayer);
 
-// stopBtn.addEventListener("click", () => {});
+stopBtn.addEventListener("click", () => {
+  audio.src = "";
+});
 
 const createCard = (data) => {
   const card = document.createElement("a");
@@ -172,8 +205,29 @@ const renderCatalog = (dataList) => {
   addHandlerTrack();
 };
 
+const checkCount = (i = 1) => {
+  trackCard[0];
+  if (catalogContainer.clientHeight > trackCard[0].clientHeight * 3) {
+    trackCard[trackCard.length - i].style.display = "none";
+    checkCount(i + 1);
+  } else if (i !== 1) {
+    catalogContainer.append(catalogAddBtn);
+  }
+};
+
 const init = () => {
   renderCatalog(dataMusic);
+  checkCount();
+
+  catalogAddBtn.addEventListener("click", () => {
+    [...trackCard].forEach((element) => {
+      element.style.display = "";
+      catalogAddBtn.remove();
+    });
+  });
+
+  prevBtn.addEventListener("click", () => {});
+  nextBtn.addEventListener("click", () => {});
 };
 
 init();
